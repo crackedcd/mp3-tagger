@@ -128,9 +128,11 @@ class ID3TagV1(ID3Tag):
             val = struct.unpack('>B', self.bytes_)[0]
         else:
             try:
-                val = self.bytes_.decode()
+                bytes_ = self.bytes_.replace(b'`', b'').replace(b' ', b'').replace(b'\x00', b'')
+                val = bytes_.decode()
             except UnicodeDecodeError:
-                val = self.bytes_.decode('CP1251')
+                # val = self.bytes_.decode('CP1251')
+                val = ""
             if '\x00' in val:
                 val = val.replace('\x00', '')
         return val
